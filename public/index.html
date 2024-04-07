@@ -18,11 +18,96 @@
   <script src="../node_modules/maplibre-gl/dist/maplibre-gl.js"></script>
   <link rel="stylesheet" href="../node_modules/maplibre-gl/dist/maplibre-gl.css">
 
+  <style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+
 </head>
 
-<body class="flex h-dvh font-[montserrat]">
+<body class="flex h-dvh font-[montserrat] relative">
+  <div id="modalUsulan" class="hidden h-screen w-screen bg-[#000000cb] z-20 absolute justify-center items-center">
+    <div class="bg-white rounded w-10/12 h-5/6 overflow-auto relative">
+      <div class="sticky top-0 z-10 p-2 bg-white flex justify-between items-center w-full">
+        <p class="text-lg"><strong>Formulir Penambahan Usulan</strong></p>
+        <button id="closeModalUsulan"
+          class="material-symbols-outlined shadow bg-[#33363F] text-white rounded hover:bg-white hover:drop-shadow hover:text-black">close</button>
+      </div>
+
+      <div class="flex h-full max-h-[400px] w-full gap-2 px-2 z-0 text-sm">
+        <div id="form" class="h-full w-5/12">
+          <div id="nomenContainer" class="">
+            <strong>Urusan: <span id="kodeUrusan"></span></strong>
+            <p id="urusanDesc" class="border-b-[1px] w-full text-xs"></p>
+          </div>
+          <div id="nomenContainer" class="">
+            <strong>Program: <span id="kodeProgram"></span></strong>
+            <p id="programDesc" class="border-b-[1px] w-full text-xs"></p>
+          </div>
+          <div id="nomenContainer" class="">
+            <strong>Kegiatan: <span id="kodeKegiatan"></span></strong>
+            <p id="kegiatanDesc" class="border-b-[1px] w-full text-xs"></p>
+          </div>
+          <div id="nomenContainer" class="">
+            <strong>Sub-kegiatan: <span id="kodeSubkegiatan"></span></strong>
+            <p id="subkegiatanDesc" class="border-b-[1px] w-full text-xs"></p>
+          </div>
+
+          <button
+            class="w-full p-2 mt-2 rounded-md bg-[#33363F] text-white hover:bg-white hover:drop-shadow hover:text-black">Pilih
+            Nomenklatur</button>
+
+          <div id="descContainer" class="mt-2">
+            <label for="description"><strong>Deskripsi:</strong></label><br>
+            <textarea required name="description" id="" class="w-full border-2 rounded" rows="3"></textarea>
+          </div>
+
+          <div id="descContainer" class="select-none">
+            <label for="koordinat"><strong>Koordinat:</strong></label><br>
+            <textarea readonly name="koordinat" id="" class="w-full border-2 rounded select-none" rows="3"></textarea>
+          </div>
+
+          <div id="anggaranContainer" class="">
+            <label for="anggaran"><strong>Anggaran:</strong></label><br>
+            <div class="flex gap-2">
+              <div class="flex items-center border-2 w-fit gap-1 rounded">
+                <p class="flex items-center bg-gray-200 h-full px-2 rounded-l">Rp</p>
+                <input type="number" name="anggaran" id="" class="h-full">
+              </div>
+
+              <button
+                class="bg-[#33363F] rounded p-2 text-white hover:bg-white hover:drop-shadow hover:text-black">Reset</button>
+              <button
+                class="bg-[#33363F] rounded p-2 text-white hover:bg-white hover:drop-shadow hover:text-black">Simpan</button>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="mapUsulanContainer" class="h-full w-7/12 border-2 rounded border-red-500 relative">
+          <div class="bg-white rounded absolute top-36 left-[9px] border-2 border-[rgba(0,0,0,0.1)] z-10 flex flex-col">
+            <button class="material-symbols-outlined w-[30px] h-[30px] text-[#33363F] border-[1px]" style="font-size: 20px"><strong>location_on</strong></button>
+            <button class="material-symbols-outlined w-[30px] h-[30px] text-[#33363F] border-[1px]" style="font-size: 20px"><strong>polyline</strong></button>
+            <button class="material-symbols-outlined w-[30px] h-[30px] text-[#33363F] border-[1px]" style="font-size: 20px"><strong>rectangle</strong></button>
+          </div>
+          <div id="mapUsulan" class="h-full w-full"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <div class="grid grid-rows-15 grid-cols-15 w-full h-full ">
-    <div id="header" class="bg-[#33363F] col-span-full row-start-1 row-end-3 grid grid-cols-15 ">
+    <div id="header" class="bg-[#0F4068] col-span-full row-start-1 row-end-3 grid grid-cols-15 ">
       <div class="flex justify-center items-center p-2"><img src="../asset/Lambang UGM-putih.png" class="size-[64px]"
           alt=""></div>
       <p class="col-start-2 col-end-8 text-xl  font-bold flex items-center text-white p-3">Peta Informasi Kabupaten
@@ -30,7 +115,7 @@
     </div>
 
     <div id="sidebar"
-      class="relative bg-gradient-to-b from-[#33363F] from-30% to-[#000000] row-span-13 col-start-1 col-span-1 flex flex-col items-center gap-4 ease-linear">
+      class="relative bg-gradient-to-b from-[#0F4068] from-30% to-[#295A82] row-span-13 col-start-1 col-span-1 flex flex-col items-center gap-4 ease-linear">
       <button id="dashboardButton"
         class="buttonSidebar flex items-center justify-center gap-2 mt-6 h-fit w-full px-3 ease-linear">
         <div class="buttonLogo material-symbols-outlined bg-white rounded p-1" style="font-size: 32px;">dashboard</div>
@@ -59,70 +144,176 @@
     </div>
 
     <div id="mapContainer" class="relative row-span-13 col-start-2 col-end-16">
-      <div class="bg-[#ffffff9c] backdrop-blur rounded h-52 w-52 absolute z-10 right-2 top-2">
-        <button class="flex items-center dropdownButton">
-          <div class="material-symbols-outlined border-2">arrow_right</div>
-          <p>Batas Administrasi</p>
-        </button>
-
+      <button id="usulanButton" class="absolute z-10 bottom-2 left-2 rounded bg-white px-2 py-1">
+        <strong>+Usulan</strong>
+      </button>
+      <div id="layerControl"
+        class="bg-[#ffffff9c] p-1 backdrop-blur rounded overflow-auto max-h-72 min-w-[166px] max-w-60 absolute z-10 right-2 top-2">
         <div class="text-sm dropdown">
           <button class="flex items-center dropdownButton">
-            <div class="logo material-symbols-outlined border-2">arrow_right</div>
-            <div class="logoo material-symbols-outlined border-2" style="display: none;">arrow_drop_down</div>
-            <p>Jalan</p>
+            <div class="collapsedDropdown material-symbols-outlined">arrow_right</div>
+            <div class="expandedDropdown material-symbols-outlined" style="display: none;">arrow_drop_down</div>
+            <p><strong>Batas Administrasi</strong></p>
           </button>
-          <div class="w-full border-2 pl-6 dropdownContent hidden">
-            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
-              <input type="checkbox" name="jalanKab" id="">
+          <ul class="w-full pl-6 dropdownContent hidden">
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="Kecamatan" id="administrasiKecamatan">
               <div class="flex items-center gap-2">
                 <div class="w-4 border-2 border-red-500"></div>
-                <label for="jalanKab">Jalan Kabupaten</label>
+                <label for="Kecamatan">Kecamatan</label>
               </div>
-            </div>
+            </li>
 
-            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
-              <input type="checkbox" name="jalanKab" id="">
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="Kelurahan" id="administrasiKelurahan">
               <div class="flex items-center gap-2">
                 <div class="w-4 border-2 border-red-500"></div>
-                <label for="jalanKab">Jalan Kecamatan</label>
+                <label for="Kelurahan">Kelurahan</label>
               </div>
-            </div>
-
-
-          </div>
+            </li>
+          </ul>
         </div>
 
         <div class="text-sm dropdown">
           <button class="flex items-center dropdownButton">
-            <div class="logo material-symbols-outlined border-2">arrow_right</div>
-            <div class="logoo material-symbols-outlined border-2" style="display: none;">arrow_drop_down</div>
-            <p>Guna Lahan</p>
+            <div class="collapsedDropdown material-symbols-outlined">arrow_right</div>
+            <div class="expandedDropdown material-symbols-outlined" style="display: none;">arrow_drop_down</div>
+            <p><strong>Jalan</strong></p>
           </button>
-          <div class="w-full border-2 pl-6 dropdownContent hidden">
-            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
-              <input type="checkbox" name="jalanKab" id="">
+          <ul class="w-full pl-6 dropdownContent hidden">
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="jalanKabupaten" id="">
               <div class="flex items-center gap-2">
                 <div class="w-4 border-2 border-red-500"></div>
-                <label for="jalanKab">Jalan Kabupaten</label>
+                <label for="jalanKabupaten">Jalan Kabupaten</label>
               </div>
-            </div>
-  
-            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
-              <input type="checkbox" name="jalanKab" id="">
-              <div class="flex items-center gap-2">
-                <div class="w-4 border-2 border-red-500"></div>
-                <label for="jalanKab">Jalan Kecamatan</label>
-              </div>
-            </div>  
-          </div>
+            </li>
 
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="jalanKecamatan" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKecamatan">Jalan Kecamatan</label>
+              </div>
+            </li>
+          </ul>
         </div>
 
+        <div class="text-sm dropdown">
+          <button class="flex items-center dropdownButton">
+            <div class="collapsedDropdown material-symbols-outlined">arrow_right</div>
+            <div class="expandedDropdown material-symbols-outlined" style="display: none;">arrow_drop_down</div>
+            <p><strong>Guna Lahan</strong></p>
+          </button>
 
-        <button class="flex items-center dropdownButton">
-          <div class="material-symbols-outlined border-2">arrow_right</div>
-          <p>Hotspot</p>
-        </button>
+          <ul class="w-full pl-6 dropdownContent hidden">
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="pemukiman" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="pemukiman">Pemukiman</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="sungai" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="sungai">Sungai</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="sawahHujan" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="sawahHujan">Sawah Tadah Hujan</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="hutan" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="hutan">Hutan</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="kebun" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="kebun">Perkebunan</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="tegal" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="tegal">Tegal/Ladang</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="industri" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="industri">Industri</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="sawahIrigasi" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="sawahIrigasi">Sawah Irigasi</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="semakBelukar" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="semakBelukar">Semak/Belukar</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="waduk" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="waduk">Waduk</label>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="text-sm dropdown">
+          <button class="flex items-center dropdownButton">
+            <div class="collapsedDropdown material-symbols-outlined">arrow_right</div>
+            <div class="expandedDropdown material-symbols-outlined" style="display: none;">arrow_drop_down</div>
+            <p><strong>Hotspot</strong></p>
+          </button>
+
+          <ul class="w-full pl-6 dropdownContent hidden">
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Pemukiman</label>
+              </div>
+            </li>
+
+            <li class="flex flex-row-reverse justify-between w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Pemukiman</label>
+              </div>
+            </li>
+          </ul>
+        </div>
 
       </div>
       <div id="map" class="h-full w-full"></div>
