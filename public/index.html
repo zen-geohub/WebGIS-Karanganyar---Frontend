@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebGIS Karanganyar</title>
+
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="../node_modules/maplibre-gl/dist/maplibre-gl.js"></script>
+  <link rel="stylesheet" href="../node_modules/maplibre-gl/dist/maplibre-gl.css">
+
+</head>
+
+<body class="flex h-dvh font-[montserrat]">
+  <div class="grid grid-rows-15 grid-cols-15 w-full h-full ">
+    <div id="header" class="bg-[#33363F] col-span-full row-start-1 row-end-3 grid grid-cols-15 ">
+      <div class="flex justify-center items-center p-2"><img src="../asset/Lambang UGM-putih.png" class="size-[64px]"
+          alt=""></div>
+      <p class="col-start-2 col-end-8 text-xl  font-bold flex items-center text-white p-3">Peta Informasi Kabupaten
+        Karanganyar</p>
+    </div>
+
+    <div id="sidebar"
+      class="relative bg-gradient-to-b from-[#33363F] from-30% to-[#000000] row-span-13 col-start-1 col-span-1 flex flex-col items-center gap-4 ease-linear">
+      <button id="dashboardButton"
+        class="buttonSidebar flex items-center justify-center gap-2 mt-6 h-fit w-full px-3 ease-linear">
+        <div class="buttonLogo material-symbols-outlined bg-white rounded p-1" style="font-size: 32px;">dashboard</div>
+        <p class="buttonName text-white font-semibold hidden">Dashboard</p>
+      </button>
+
+      <button id="mapButton" class="buttonSidebar flex items-center justify-center gap-2 h-fit w-full px-3">
+        <div class="buttonLogo material-symbols-outlined size-fit bg-white rounded p-1" style="font-size: 32px;">map
+        </div>
+        <p class="buttonName text-white font-semibold hidden">Peta</p>
+      </button>
+
+      <button id="proposalsButton" class="buttonSidebar flex items-center justify-center gap-2 h-fit w-full px-3">
+        <div class="buttonLogo material-symbols-outlined size-fit bg-white rounded p-1" style="font-size: 32px;">
+          description</div>
+        <p class="buttonName text-white font-semibold hidden">Daftar<br>Usulan</p>
+      </button>
+
+      <button id="menuButton"
+        class="buttonSidebar flex items-center justify-center gap-2 h-fit w-full px-3 absolute bottom-4">
+        <div class="buttonLogo material-symbols-outlined size-fit bg-white rounded p-1 " style="font-size: 32px;">menu
+        </div>
+        <p class="buttonName text-white font-semibold hidden">Menu</p>
+      </button>
+
+    </div>
+
+    <div id="mapContainer" class="relative row-span-13 col-start-2 col-end-16">
+      <div class="bg-[#ffffff9c] backdrop-blur rounded h-52 w-52 absolute z-10 right-2 top-2">
+        <button class="flex items-center dropdownButton">
+          <div class="material-symbols-outlined border-2">arrow_right</div>
+          <p>Batas Administrasi</p>
+        </button>
+
+        <div class="text-sm dropdown">
+          <button class="flex items-center dropdownButton">
+            <div class="logo material-symbols-outlined border-2">arrow_right</div>
+            <div class="logoo material-symbols-outlined border-2" style="display: none;">arrow_drop_down</div>
+            <p>Jalan</p>
+          </button>
+          <div class="w-full border-2 pl-6 dropdownContent hidden">
+            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Jalan Kabupaten</label>
+              </div>
+            </div>
+
+            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Jalan Kecamatan</label>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <div class="text-sm dropdown">
+          <button class="flex items-center dropdownButton">
+            <div class="logo material-symbols-outlined border-2">arrow_right</div>
+            <div class="logoo material-symbols-outlined border-2" style="display: none;">arrow_drop_down</div>
+            <p>Guna Lahan</p>
+          </button>
+          <div class="w-full border-2 pl-6 dropdownContent hidden">
+            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Jalan Kabupaten</label>
+              </div>
+            </div>
+  
+            <div class="flex flex-row-reverse justify-between border-2 w-full items-center gap-2">
+              <input type="checkbox" name="jalanKab" id="">
+              <div class="flex items-center gap-2">
+                <div class="w-4 border-2 border-red-500"></div>
+                <label for="jalanKab">Jalan Kecamatan</label>
+              </div>
+            </div>  
+          </div>
+
+        </div>
+
+
+        <button class="flex items-center dropdownButton">
+          <div class="material-symbols-outlined border-2">arrow_right</div>
+          <p>Hotspot</p>
+        </button>
+
+      </div>
+      <div id="map" class="h-full w-full"></div>
+    </div>
+
+  </div>
+
+  <script src="index.js" type="module"></script>
+</body>
+
+</html>

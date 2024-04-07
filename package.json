@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "tailwindcss": "^3.3.5"
+  },
+  "dependencies": {
+    "maplibre-gl": "^4.1.0"
+  },
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/input.css -o ./public/index.css --watch"
+  }
+}
