@@ -642,20 +642,12 @@ video {
   grid-column: 1 / -1;
 }
 
-.col-span-2 {
-  grid-column: span 2 / span 2;
-}
-
 .col-start-1 {
   grid-column-start: 1;
 }
 
 .col-start-2 {
   grid-column-start: 2;
-}
-
-.col-start-3 {
-  grid-column-start: 3;
 }
 
 .col-end-16 {
@@ -908,26 +900,6 @@ video {
 
 .from-30\% {
   --tw-gradient-from-position: 30%;
-}
-
-.from-80\% {
-  --tw-gradient-from-position: 80%;
-}
-
-.from-50\% {
-  --tw-gradient-from-position: 50%;
-}
-
-.to-\[\#000000\] {
-  --tw-gradient-to: #000000 var(--tw-gradient-to-position);
-}
-
-.to-\[\#FFFFFF\] {
-  --tw-gradient-to: #FFFFFF var(--tw-gradient-to-position);
-}
-
-.to-\[\#B8D2E7\] {
-  --tw-gradient-to: #B8D2E7 var(--tw-gradient-to-position);
 }
 
 .to-\[\#295A82\] {
