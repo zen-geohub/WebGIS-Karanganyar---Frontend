@@ -1,5 +1,6 @@
 import { menuButton, openMenu, sidebar, mapContainer, buttonName, buttonSidebar, hoverButton, dashboardButton, mapButton, proposalsButton } from "./pages/page.js";
 import { API_KEY } from "./data/key.js";
+import * as maplibregl from "maplibre-gl";
 
 var map = new maplibregl.Map({
   container: 'map', // container id
